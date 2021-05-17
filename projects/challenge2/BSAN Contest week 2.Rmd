@@ -1,0 +1,153 @@
+---
+title: "University of Kansas Machine Learning Competition"
+author: "Zach Meyen"
+date: "5/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+The following is a 2019 competition in which I took first place out of around 15 participants from the University of Kansas School of Business as well as the University of Kansas School of Computer Engineering. It was open to teams and individuals, however I opted to participate solo. The competition was hosted in conjunction with Tradebot, a prominent Kansas City algorithmic trading company.
+
+The competition was held in three parts with a mix of practical application of analytic models and answering of theoretical questions. 
+
+I placed 1st place in parts one and two. In part three, I placed second.
+
+## Challenge 2: Grade Prediction
+
+**Problem Statemet**
+The included dataset consists of students from two different schools with varying backgrounds. Their grades are represented as an integer value. Each student/observation has 30 attributes. The data has already been cleaned, the focus of this challenge it to create the best predictive model possible with this information.
+
+**Evaluation**
+The Business Analytics Club has kept a holdout sample of the data consisting of x rows of data. We will use the model your group submitted to estimate the Grade of our holdout sample and compare your predictions to the actual Grades. The evaluation metric we will be using is the Mean Squared Error.
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE, results = FALSE}
+library(mlr)
+library(caret)
+library(caTools)
+library(Metrics)
+```
+
+First we must set the seed for reproducibility as well as load in the datasets. In this writeup, I am including my own holdup data file.
+
+
+```{r}
+set.seed(1)
+
+#load training data
+data <- read.csv("studentperf.csv")
+
+#load HOLDOUT data
+hold <- read.csv("HOLDOUT.csv")
+```
+
+My plan is to use a boosting machine learning model for this challenge. For best performance, I am going to change all of the categorical variables to numeric variables. I do the same for the holdout, but I will leave that in the raw code.
+### Feature Transformation
+```{r}
+#GP = 1, MS = 0
+data$school <- ifelse(data$school=='GP',1,0)
+#Male=1, Female = 0
+data$sex <- ifelse(data$sex=='M',1,0)
+#rural = 0, urban = 1
+data$address <- ifelse(data$address=="U",1,0)
+#family size LE3 = 0, GE3= 1
+data$Fsize <- ifelse(data$Fsize=="GT3",1,0)
+#parental status T == 1, A == 0
+data$Pstatus <- ifelse(data$Pstatus=="T",1,0)
+#school support
+data$schoolsup <- ifelse(data$schoolsup=="yes",1,0)
+#family support
+data$famsup <- ifelse(data$famsup=="yes",1,0)
+#extra paid classes = yes=1
+data$paid <- ifelse(data$paid=="yes",1,0)
+#extracuricular 
+data$activities <- ifelse(data$activities=='yes',1,0)
+#nurseryschool
+data$nschool<- ifelse(data$nschool=='yes',1,0)
+#desire for higher ed
+data$higher<-ifelse(data$higher=='yes',1,0)
+#homeinternet
+data$internet<-ifelse(data$internet=='yes',1,0)
+#romantic relatonship
+data$relationship<-ifelse(data$relationship=='yes',1,0)
+
+#create dummies for the non binary features
+data2 <- createDummyFeatures(data, method = "reference")
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, results = FALSE}
+#change categoricals to numeric in HOLDOUT--------------------
+  
+  #GP = 1, MS = 0
+hold$school <- ifelse(hold$school=='GP',1,0)
+#Male=1, Female = 0
+hold$sex <- ifelse(hold$sex=='M',1,0)
+#rural = 0, urban = 1
+hold$address <- ifelse(hold$address=="U",1,0)
+#family size LE3 = 0, GE3= 1
+hold$Fsize <- ifelse(hold$Fsize=="GT3",1,0)
+#parental status T == 1, A == 0
+hold$Pstatus <- ifelse(hold$Pstatus=="T",1,0)
+#school support
+hold$schoolsup <- ifelse(hold$schoolsup=="yes",1,0)
+#family support
+hold$famsup <- ifelse(hold$famsup=="yes",1,0)
+#extra paid classes = yes=1
+hold$paid <- ifelse(hold$paid=="yes",1,0)
+#extracuricular 
+hold$activities <- ifelse(hold$activities=='yes',1,0)
+#nurseryschool
+hold$nschool<- ifelse(hold$nschool=='yes',1,0)
+#desire for higher ed
+hold$higher<-ifelse(hold$higher=='yes',1,0)
+#homeinternet
+hold$internet<-ifelse(hold$internet=='yes',1,0)
+#romantic relatonship
+hold$relationship<-ifelse(hold$relationship=='yes',1,0)
+
+#create dummies for the non binary features
+hold <- createDummyFeatures(hold, method = "reference")
+```
+### Model Creation and Results
+
+I will use the xgboost model, which is a very robust and proven machine learning algorthm. XGboost stands for Extreme Gradient Boosting. In simple terms, it creates a regression tree, then it creates another tree to predict the errors of the prior tree. It does this iteration over and over again and combines all of the information gained from the trees in the final regression model.
+
+I will start with a parameter grid. This is a range of parameters that the XGboost algorithm will tune itself with and pick the best performing combination of values. As you can see below, I am also including crossvalidation in the model to improve accuracy.
+
+```{r}
+parametersGrid <-  expand.grid(eta = 0.1, 
+                               colsample_bytree=c(0.5,0.7),
+                               max_depth=c(3,6),
+                               nrounds=100,
+                               gamma=1,
+                               min_child_weight=2,
+                               subsample = .8)
+
+ControlParamteres <- trainControl(method = "cv",
+                                  number = 5)
+```
+And now we will create the model, which will iterate 100 times.
+```{r, echo=TRUE, warning=FALSE, message=FALSE, results = FALSE}
+modelxgboost <- train(Grade~., 
+                      data = data2,
+                      method = "xgbTree",
+                      trControl = ControlParamteres,
+                      tuneGrid=parametersGrid)
+```
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE, results = TRUE}
+xgpredict<-predict(modelxgboost,hold)
+xgpredict
+
+results<-cbind(hold$Grade, predict(modelxgboost,hold))
+```
+
+And he we get our final mean squared error:
+```{r, echo=TRUE, warning=FALSE, message=FALSE, results = TRUE}
+#MSE
+mse(hold$Grade,predict(modelxgboost,hold))
+```
+
