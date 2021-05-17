@@ -24,5 +24,5 @@ Since then, I've ridden that bike through 11 countries.
 
  ---
  
- ### More Projects Coming Soon
+ ## More Projects Coming Soon
 
