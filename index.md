@@ -4,7 +4,7 @@
 
 ### University of Kansas Machine Learning Competition
 
-[Challenge 1](/sample_page)
+[Challenge 1](/projects/Challenge1/index.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
