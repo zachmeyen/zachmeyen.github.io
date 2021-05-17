@@ -1,10 +1,13 @@
 title: Zach Meyen # your name (or website title) here
 logo: "/images/Headshot.jpg?raw=true" # your photo (or logo) here
 description: > # your text below (remove <br> elements if you don't need line breaks)
- Education
- <br><br>
- Bachelors in Business Analytics | Univerisity of Kansas | 2015 - 2019
- Masters in Analytics | Georgia Tech | 2020 - Present
+ **Education**
+  <br><br>
+    Bachelors in Business Analytics
+    Univerisity of Kansas | 2015 - 2019
+  <br><br>
+    Masters in Analytics
+    Georgia Tech | 2020 - Present
   <br><br>
   I like to focus my analytical efforts on predictive algorithms, simulation, and the application of insights derived from models in real life decisions.
   <br><br>
