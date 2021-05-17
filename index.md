@@ -7,17 +7,17 @@ This competition was hosted by my university during my senior year of undergrad.
 
 The grand prize was $1500 in cash. I won first place and promptly bought a $1500 bike at the local bike shop.
 
-Since then, I've ridded that bike through 11 countries.
+Since then, I've ridden that bike through 11 countries.
 
-[Challenge 1](/projects/Challenge1/bsan1.html)
-
-
----
-[Challenge 2](projects/challenge2/BSAN-Contest-week-2.html)
+[Challenge 1: Exploratory Data Analysis and Linear Modeling](/projects/Challenge1/bsan1.html)
 
 
 ---
-[Challenge 3](projects/challenge3/bsanweek3.html)
+[Challenge 2: XGboosting Machine Learning](projects/challenge2/BSAN-Contest-week-2.html)
+
+
+---
+[Challenge 3: Visualization and Apriori Algorithms/Association Mining](projects/challenge3/bsanweek3.html)
 
 
 ---
