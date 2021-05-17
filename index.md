@@ -12,7 +12,7 @@
 
 
 ---
-[Project 3 Title](http://example.com/)
+[Challenge 3](projects/challenge3/bsanweek3.html)
 
 
 ---
@@ -26,8 +26,3 @@
 - [Project 5 Title](http://example.com/)
 
 ---
-
-
-
-
-
