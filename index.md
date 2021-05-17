@@ -2,9 +2,9 @@
 
 ---
 
-### Category Name 1 
+### University of Kansas Machine Learning Competition
 
-[Project 1 Title](/sample_page)
+[Challenge 1](/sample_page)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
