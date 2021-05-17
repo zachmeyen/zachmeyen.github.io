@@ -23,4 +23,6 @@ Since then, I've ridden that bike through 11 countries.
 [First Place Certificate](images/1st.jpg)
 
  ---
+ 
+ ### More Projects Coming Soon
 
