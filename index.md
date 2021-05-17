@@ -20,7 +20,7 @@ Since then, I've ridden that bike through 11 countries.
 
 [Challenge 3: Visualization and Apriori Algorithms/Association Mining](projects/challenge3/bsanweek3.html)
 
-[First Place Certificate](images/1sr.jpg)
+[First Place Certificate](images/1st.jpg)
 
  ---
 
